@@ -16,9 +16,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Database guide
 
-> [!IMPORTANT]  
-> The Docker image must be running in order to use the database.
-
 Open prisma studio to inspect database :
 
 ```
@@ -29,3 +26,6 @@ Push models in the database :
 ```
 npx prisma db push
 ```
+
+> [!IMPORTANT]  
+> The Docker image must be running in order to use the database.
