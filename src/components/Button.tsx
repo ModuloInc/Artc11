@@ -1,5 +1,5 @@
-export default function Button({children="Button", variant = "primary", type="submit"}) {
-    const styles = "px-4 py-2 rounded-md font-medium transition-all";
+export default function Button({children="Button", variant = "primary", type="button"}) {
+    const styles = "px-4 py-2 rounded-md font-medium transition-all cursor-pointer";
     const variants = {
         primary: "bg-blue-500 text-white hover:bg-blue-600",
         secondary: "bg-gray-500 text-white hover:bg-gray-600",
