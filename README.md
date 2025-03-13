@@ -2,6 +2,14 @@
 
 ### Run project with the following commands :
 
+For first usage only :
+
+```
+npx prisma db push
+```
+
+Deploy the container :
+
 ```
 docker compose up --watch
 ```
