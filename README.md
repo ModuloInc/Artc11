@@ -2,16 +2,20 @@
 
 ### Run project with the following commands :
 
+Deploy the container :
+
+```
+docker compose up --watch
+```
+
 For first usage only :
 
 ```
 npx prisma db push
 ```
 
-Deploy the container :
-
 ```
-docker compose up --watch
+prisma generate
 ```
 
 In a second terminal :
