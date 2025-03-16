@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import Splashscreen from "@/components/Splashscreen";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -13,5 +13,5 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
         if (isLoading) return;
     }, [isLoading]);
 
-    return isLoading && isHome ? <Splashscreen /> : <>{children}</>;
+    return isLoading && isHome ? <SplashScreen finishLoading={() => setIsLoading(false)}/> : <>{children}</>;
 }
