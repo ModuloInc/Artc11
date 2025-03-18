@@ -41,7 +41,7 @@ const BottomNavbar = ({ items }: BottomNavbarProps) => {
             ),
         },
         {
-            path: '/categorie',
+            path: '/category',
             icon: (
                 <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="12.2284" height="10.6651" rx="3" transform="matrix(-1 0 0 1 28 0)" fill="black"/>
