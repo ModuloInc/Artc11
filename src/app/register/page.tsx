@@ -32,7 +32,7 @@ export default function RegisterPage() {
     return (
         <div className="h-screen flex justify-center items-center bg-black">
             {/* Ajustement pour que la carte prenne toute la hauteur */}
-            <div className="w-[402px] h-full max-h-[852px] bg-[#FFFFFF] shadow-lg  p-6 flex flex-col items-center justify-between">
+            <div className="w-[402px] h-full max-h-[852px] bg-[#FFFAFA] shadow-lg  p-6 flex flex-col items-center justify-between">
 
                 {/* LOGO */}
                 <div className="w-[226px] h-[117px] mt-20 flex justify-center">
