@@ -58,7 +58,7 @@ const SplashScreen = ({finishLoading}) => {
     return (
         // @ts-ignore
         <div className="flex h-screen items-center justify-center">
-            <Image id="logo" src="/logo.png" alt="" width={200} height={200}/>
+            <Image id="logo" src="/logo.svg" alt="" width={200} height={200}/>
         </div>
     )
 }
