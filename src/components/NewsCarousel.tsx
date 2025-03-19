@@ -21,7 +21,6 @@ const newsData: NewsItem[] = [
         description: "",
         imageSrc: "/images/news2.jpg",
     },
-
 ];
 
 export default function NewsCarousel() {
@@ -41,8 +40,8 @@ export default function NewsCarousel() {
                                 <div className="relative w-full h-48 sm:h-56 md:h-64">
                                     <Image src={news.imageSrc} alt={news.description} fill className="object-cover opacity-75" />
                                 </div>
-                                <div className="p-4">
-                                    <p className="text-sm text-gray-600 mt-2">{news.description}</p>
+                                <div className="p-2">
+                                    <p className="text-[#002266] text-[20px] font-medium mt-2">{news.description}</p> {/* Blue color applied here */}
                                 </div>
                             </div>
                         </SwiperSlide>
