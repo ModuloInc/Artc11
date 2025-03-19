@@ -16,15 +16,13 @@ export default function LoginPage() {
             body: JSON.stringify({email, password}),
             headers: {"Content-Type": "application/json"},
         });
-
         const data = await res.json();
-
         if (!res.ok) {
             alert(data.error || "Login failed");
             return;
         }
 
-        router.push("/profile"); // Redirection après connexion
+        router.push("/profile");
     };
 
     return (
@@ -78,7 +76,6 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-
                         {/* Bouton Connexion */}
                         <div className="flex justify-center mt-2">
                             <button
@@ -97,7 +94,6 @@ export default function LoginPage() {
                         Register
                     </button>
                 </div>
-
             </div>
         </div>
     );

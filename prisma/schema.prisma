@@ -27,3 +27,10 @@ model User {
   password String?
   image    String?
 }
+
+model News {
+  id          String   @id @default(cuid())
+  description String
+  imageUrl    String
+  createdAt   DateTime @default(now())
+}
