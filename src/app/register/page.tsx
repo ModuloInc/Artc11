@@ -29,9 +29,9 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="h-screen flex justify-center items-center bg-black">
+        <div className="h-screen flex justify-center items-center">
             {/* Carte centrée verticalement */}
-            <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] shadow-lg p-6 flex flex-col items-center justify-center rounded-3xl">
+            <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] p-6 flex flex-col items-center justify-center">
 
                 {/* LOGO */}
                 <div className="w-[226px] h-[117px] flex justify-center mb-6">
