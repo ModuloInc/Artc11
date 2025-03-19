@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient();
 
@@ -33,5 +35,42 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("❌ Erreur dans l'API Register :", error);
         return new Response(JSON.stringify({ error: "Erreur serveur" }), { status: 500 });
+    } finally {
+        await prisma.$disconnect(); // Fermeture de Prisma après chaque requête
+    }
+}
+
+// ✅ Connexion via Google OAuth
+export async function GET(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+
+        if (!session || !session.user || !session.user.email) {
+            return new Response(JSON.stringify({ error: "Non authentifié" }), { status: 401 });
+        }
+
+        const { email, name } = session.user;
+
+        // Vérifier si l'utilisateur existe déjà
+        let user = await prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            // Créer l'utilisateur avec Google OAuth
+            user = await prisma.user.create({
+                data: {
+                    fullname: name || "Utilisateur Google",
+                    email,
+                    password: "", // Pas de mot de passe pour Google OAuth
+                },
+            });
+            console.log("✅ Utilisateur Google enregistré :", user);
+        }
+
+        return new Response(JSON.stringify({ message: "Connexion Google réussie", user }), { status: 200 });
+    } catch (error) {
+        console.error("❌ Erreur lors de l'authentification Google :", error);
+        return new Response(JSON.stringify({ error: "Erreur serveur" }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
     }
 }

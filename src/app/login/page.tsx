@@ -43,11 +43,12 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="h-screen flex justify-center items-center bg-white">
-            <div className="w-[402px] h-[852px] bg-[#C1E3FF] shadow-lg rounded-3xl p-6 flex flex-col items-center">
+        <div className="h-screen flex justify-center items-center bg-black">
+            {/* Ajustement pour que la carte prenne toute la hauteur */}
+            <div className="w-[402px] h-full max-h-[852px] bg-[#FFFFFF] shadow-lg  p-6 flex flex-col items-center justify-between">
 
                 {/* LOGO */}
-                <div className="w-[226px] h-[117px] mt-20 mb-14 flex justify-center">
+                <div className="w-[226px] h-[117px] mt-20 flex justify-center">
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
 
@@ -104,7 +105,7 @@ export default function LoginPage() {
                 {/* Lien Register */}
                 <button
                     onClick={() => router.push("/register")}
-                    className="mt-12 text-[#2A51A0] font-bold text-sm"
+                    className="mb-10 text-[#2A51A0] font-bold text-sm"
                     disabled={loading}
                 >
                     Register
