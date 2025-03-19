@@ -12,7 +12,7 @@ export default function CategoryCard({ name, imageSrc, link }: CategoryCardProps
 
     return (
         <Link href={link}>
-        <div className="relative w-full h-28 sm:h-40 md:h-48 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+        <div className="relative w-full h-20 sm:h-40  rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
             <Image
                 src={imageSrc}
                 alt={name}

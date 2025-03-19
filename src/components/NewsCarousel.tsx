@@ -27,7 +27,7 @@ const newsData: NewsItem[] = [
 export default function NewsCarousel() {
     return (
         <div className="w-full px-4 ">
-            <div className="w-full px-4 mb-8">
+            <div className="w-full px-2 mb-8">
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={20}

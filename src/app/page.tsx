@@ -18,16 +18,16 @@ export default async function Home() {
     return (
         <>
             <div className="w-full px-4">
-                <div className=" text-blue py-3 rounded-t-lg text-left px-4 ">
-                    <h2 className="text-xl font-semibold">Top News</h2>
+                <div className=" py-3 rounded-t-lg text-left px-2 mb-4">
+                    <h2 className="text-[#002266] text-[32px] font-semibold">Top News</h2>
                 </div>
                 <div className="w-full">
                     <NewsCarousel/>
                 </div>
-                <div className=" text-blue  rounded-t-lg text-left px-4 ">
-                    <h3 className="text-xl font-semibold">Topics</h3>
+                <div className=" py-3 rounded-t-lg text-left px-2">
+                    <h3 className="text-[#002266] text-[17px] font-semibold">Topics</h3>
                 </div>
-                <div className="grid grid-cols-3 gap-4 p-4">
+                <div className="grid grid-cols-3 gap-4 p-2">
                     {categories.map((category, index) => (
                         <CategoryCard key={index} name={category.name} imageSrc={category.imageSrc}
                                       link={category.link}/>
