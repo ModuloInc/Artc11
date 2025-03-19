@@ -9,15 +9,15 @@ async function main() {
             imageUrl: "/News.png",
         },
         {
-            description: "Experts are warning about the escalating impact of climate change and its effects on biodiversity.",
+            description: "World Leaders Discuss New Role for Eurovision Winners in Global Politics",
             imageUrl: "/News.png",
         },
         {
-            description: "The latest football season has brought surprises and controversies, with teams battling for the championship.",
+            description: "New Proposal Suggests Eurovision Champion Lead International Peace Talks",
             imageUrl: "/News.png",
         },
         {
-            description: "Investors are keeping an eye on the stock market as it continues to fluctuate with global events.",
+            description: "Eurovision Contestants to Take on Diplomatic Roles in United Nations Initiative",
             imageUrl: "/News.png",
         },
     ];
@@ -27,10 +27,7 @@ async function main() {
             data: newsItem,
         });
     }
-
-    console.log("🎉 5 news items have been seeded into the database!");
 }
-
 main()
     .catch((e) => {
         console.error(e);
