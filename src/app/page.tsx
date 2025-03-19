@@ -17,7 +17,7 @@ export default async function Home() {
 
     return (
         <>
-            <div className="w-full px-4">
+            <div className="w-full px-4 ">
                 <div className="py-3 rounded-t-lg text-left px-2 mb-4">
                     <h2 className="text-[#002266] text-[32px] font-semibold">Top News</h2>
                 </div>
