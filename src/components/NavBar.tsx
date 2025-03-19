@@ -75,7 +75,7 @@ const BottomNavbar = ({ items }: BottomNavbarProps) => {
 
     return (
         <nav
-            className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex justify-around items-center px-4">
+            className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 flex justify-around items-center px-4 z-10">
             {navItems.map((item, index) => (
                 <Link
                     key={index}
