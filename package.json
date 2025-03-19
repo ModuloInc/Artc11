@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "flowbite": "^3.1.2",
     "next": "15.2.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swiper": "^11.2.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
