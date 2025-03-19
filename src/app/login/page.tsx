@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -30,16 +29,15 @@ export default function LoginPage() {
 
     return (
         <div className="h-screen flex justify-center items-center bg-black">
-            {/* Ajustement pour que la carte prenne toute la hauteur */}
-            <div className="w-[402px] h-full max-h-[852px] bg-[#FFFAFA] shadow-lg p-6 flex flex-col items-center justify-between">
+            <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] shadow-lg p-6 flex flex-col items-center justify-center rounded-3xl">
 
                 {/* LOGO */}
-                <div className="w-[226px] h-[117px] mt-20 flex justify-center">
+                <div className="w-[226px] h-[117px] flex justify-center mb-6">
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
 
                 {/* FORMULAIRE */}
-                <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6">
+                <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6 mt-2">
                     <div className="relative w-[296px]">
                         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">📧</span>
                         <input
@@ -51,7 +49,7 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <div className="relative w-[296px]">
+                    <div className="relative w-[296px] mb-4">
                         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">🔒</span>
                         <input
                             type="password"
@@ -62,7 +60,7 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    {/* Forgot Password aligné correctement */}
+                    {/* Mot de passe oublié */}
                     <div className="w-[296px] text-right mt-[-6px]">
                         <button
                             className="text-blue-600 underline text-sm"
@@ -74,30 +72,20 @@ export default function LoginPage() {
                     </div>
 
                     {/* Bouton Connexion */}
-                    <div className="flex flex-col items-center gap-3 mt-6">
+                    <div className="flex justify-center mt-2">
                         <button
                             type="submit"
                             className="w-[157px] h-[48px] bg-[#2A51A0] text-white font-semibold rounded-full shadow-md hover:bg-blue-700"
                         >
                             Sign in
                         </button>
-
-                        {/* Bouton Connexion avec Google */}
-                        <button
-                            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-                            className="w-[296px] h-[42px] flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 text-gray-700 font-medium"
-                            type="button"
-                        >
-                            <img src="/google-icon.svg" alt="Google" className="w-5 h-5"/>
-                            Se connecter avec Google
-                        </button>
                     </div>
                 </form>
 
-                {/* Lien Register ajusté */}
+                {/* 🔥 Correction ici : Bouton Register est hors du formulaire */}
                 <button
                     onClick={() => router.push("/register")}
-                    className="mb-10 text-[#2A51A0] font-bold text-sm"
+                    className="mt-4 text-[#2A51A0] font-bold text-sm"
                 >
                     Register
                 </button>

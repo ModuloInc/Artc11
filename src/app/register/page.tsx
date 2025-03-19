@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -31,16 +30,16 @@ export default function RegisterPage() {
 
     return (
         <div className="h-screen flex justify-center items-center bg-black">
-            {/* Ajustement pour que la carte prenne toute la hauteur */}
-            <div className="w-[402px] h-full max-h-[852px] bg-[#FFFAFA] shadow-lg  p-6 flex flex-col items-center justify-between">
+            {/* Carte centrée verticalement */}
+            <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] shadow-lg p-6 flex flex-col items-center justify-center rounded-3xl">
 
                 {/* LOGO */}
-                <div className="w-[226px] h-[117px] mt-20 flex justify-center">
+                <div className="w-[226px] h-[117px] flex justify-center mb-6">
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
 
                 {/* FORMULAIRE */}
-                <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-10">
+                <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6 mt-2">
                     <div className="relative w-[296px]">
                         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">👤</span>
                         <input
@@ -63,7 +62,7 @@ export default function RegisterPage() {
                         />
                     </div>
 
-                    <div className="relative w-[296px]">
+                    <div className="relative w-[296px] mb-4">
                         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">🔒</span>
                         <input
                             type="password"
@@ -74,35 +73,23 @@ export default function RegisterPage() {
                         />
                     </div>
 
-                    {/* Bouton Register */}
-                    <div className="flex justify-center mt-5">
+                    {/* Boutons Register et Sign in rapprochés */}
+                    <div className="flex flex-col items-center gap-2 mt-2">
                         <button
                             type="submit"
                             className="w-[157px] h-[48px] bg-[#2A51A0] text-white font-semibold rounded-full shadow-md hover:bg-blue-700"
                         >
                             Register
                         </button>
+
+                        <button
+                            onClick={() => router.push("/login")}
+                            className="text-[#2A51A0] font-bold text-sm mt-5"
+                        >
+                            Sign in
+                        </button>
                     </div>
                 </form>
-
-                {/* Bouton Connexion avec Google */}
-                <div className="mt-5 w-full flex justify-center">
-                    <button
-                        onClick={() => signIn("google")}
-                        className="w-[296px] h-[42px] border border-gray-400 rounded-full flex items-center justify-center gap-2 hover:bg-gray-100"
-                    >
-                        <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
-                        <span>Se connecter avec Google</span>
-                    </button>
-                </div>
-
-                {/* Lien vers Login */}
-                <button
-                    onClick={() => router.push("/login")}
-                    className="mb-10 text-[#2A51A0] font-bold text-sm mt-5"
-                >
-                    Sign in
-                </button>
             </div>
         </div>
     );
