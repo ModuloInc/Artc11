@@ -16,28 +16,21 @@ export default function LoginPage() {
             body: JSON.stringify({ email, password }),
             headers: { "Content-Type": "application/json" },
         });
-
         const data = await res.json();
-
         if (!res.ok) {
             alert(data.error || "Login failed");
             return;
         }
 
-        router.push("/profile"); // Redirection après connexion
+        router.push("/profile");
     };
 
     return (
         <div className="h-screen flex justify-center items-center bg-black">
-            {/* Ajustement pour que la carte prenne toute la hauteur */}
             <div className="w-[402px] h-full max-h-[852px] bg-[#FFFFFF] shadow-lg  p-6 flex flex-col items-center justify-between">
-
-                {/* LOGO */}
                 <div className="w-[226px] h-[117px] mt-20 flex justify-center">
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
-
-                {/* FORMULAIRE */}
                 <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-10">
                     <div className="relative w-[296px]">
                         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">📧</span>
@@ -61,7 +54,6 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    {/* Forgot Password aligné correctement */}
                     <div className="w-[296px] text-right mt-[-6px]">
                         <button
                             className="text-blue-600 underline text-sm"
@@ -72,7 +64,6 @@ export default function LoginPage() {
                         </button>
                     </div>
 
-                    {/* Bouton Connexion */}
                     <div className="flex justify-center mt-10">
                         <button
                             type="submit"
@@ -83,7 +74,6 @@ export default function LoginPage() {
                     </div>
                 </form>
 
-                {/* Lien Register ajusté */}
                 <button
                     onClick={() => router.push("/register")}
                     className="mb-10 text-[#2A51A0] font-bold text-sm"

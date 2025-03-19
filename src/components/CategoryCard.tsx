@@ -19,7 +19,6 @@ export default function CategoryCard({ name, imageSrc, link }: CategoryCardProps
                     objectFit="cover"
                     className="opacity-60 "
             />
-
             <div className="absolute inset-0 flex justify-center items-center text-center grayscale">
                 <h2 className="text-white text-sm font-bold px-2">{name}</h2>
             </div>
