@@ -1,13 +1,31 @@
-// prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-    try {
-        console.log("🌱 Démarrage du seeding de la base de données...");
+    const news = [
+        {
+            description: "European Parliament Votes to Make Eurovision Winner the Next EU President.",
+            imageUrl: "/News.png",
+        },
+        {
+            description: "World Leaders Discuss New Role for Eurovision Winners in Global Politics",
+            imageUrl: "/News.png",
+        },
+        {
+            description: "New Proposal Suggests Eurovision Champion Lead International Peace Talks",
+            imageUrl: "/News.png",
+        },
+        {
+            description: "Eurovision Contestants to Take on Diplomatic Roles in United Nations Initiative",
+            imageUrl: "/News.png",
+        },
+    ];
 
-        // Créer les catégories
+    try {
+        console.log("🌱 Starting database seeding...");
+
+        // Create categories
         const categories = [
             {
                 name: "Climate & Environment",
@@ -36,23 +54,23 @@ async function main() {
                 await prisma.category.create({
                     data: category,
                 });
-                console.log(`✅ Catégorie créée: ${category.name}`);
+                console.log(`✅ Category created: ${category.name}`);
             } else {
-                console.log(`⏩ Catégorie existante: ${category.name}`);
+                console.log(`⏩ Category already exists: ${category.name}`);
             }
         }
 
-        // Récupérer les IDs des catégories
+        // Retrieve category IDs
         const allCategories = await prisma.category.findMany();
-        // Définir le type du map
+        // Define map type
         const categoryMap: Record<string, string> = {};
 
-        // Remplir le map
+        // Fill the map
         allCategories.forEach(cat => {
             categoryMap[cat.name] = cat.id;
         });
 
-        // Créer des questions
+        // Create questions
         const questions = [
             {
                 text: "Do you believe the government should play a larger role in regulating the economy?",
@@ -74,6 +92,15 @@ async function main() {
             },
         ];
 
+        // Create news items
+        for (const newsItem of news) {
+            await prisma.news.create({
+                data: newsItem,
+            });
+            console.log(`✅ News item created: ${newsItem.description.substring(0, 30)}...`);
+        }
+
+        // Create questions (now outside the news loop)
         for (const question of questions) {
             const existingQuestion = await prisma.question.findFirst({
                 where: { text: question.text },
@@ -83,26 +110,25 @@ async function main() {
                 await prisma.question.create({
                     data: question,
                 });
-                console.log(`✅ Question créée: ${question.text.substring(0, 30)}...`);
+                console.log(`✅ Question created: ${question.text.substring(0, 30)}...`);
             } else {
-                console.log(`⏩ Question existante: ${question.text.substring(0, 30)}...`);
+                console.log(`⏩ Question already exists: ${question.text.substring(0, 30)}...`);
             }
         }
 
-        console.log("✅ Seeding de la base de données terminé avec succès!");
+        console.log("✅ Database seeding completed successfully!");
     } catch (error) {
-        console.error("❌ Erreur lors du seeding de la base de données:", error);
+        console.error("❌ Error during database seeding:", error);
     } finally {
         await prisma.$disconnect();
     }
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
+    .catch((e) => {
+        console.error("❌ Unhandled error during seeding:", e);
     })
-    .catch(async (e) => {
-        console.error(e);
+    .finally(async () => {
         await prisma.$disconnect();
-        process.exit(1);
+        console.log("Database connection closed");
     });
