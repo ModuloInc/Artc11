@@ -18,7 +18,6 @@ interface LawCardProps {
 }
 
 export default function LawCard({ law, onClick }: LawCardProps) {
-    // Format the date
     const formattedDate = new Date(law.date).toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
