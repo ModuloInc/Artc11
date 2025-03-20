@@ -7,6 +7,7 @@ import DislikeIcon from "../../../public/ion_thumbs-down-sharp.svg";
 import LikeIcon from "../../../public/famicons_thumbs-up-sharp.svg";
 import NeutralIcon from "../../../public/twemoji_thinking-face.svg";
 import Image from "next/image";
+import TabBar from "@/components/TabBar";
 
 // Types pour les données
 interface Question {
@@ -392,6 +393,7 @@ export default function VotePage() {
                     </div>
                 )}
             </div>
+            <TabBar />
         </div>
     );
 }

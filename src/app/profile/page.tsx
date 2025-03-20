@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import TabBar from "@/components/TabBar";
 
 // Type definition for user data
 interface UserProfile {
@@ -178,7 +179,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
-
+            <TabBar />
         </div>
     );
 }

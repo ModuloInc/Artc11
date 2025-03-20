@@ -41,7 +41,6 @@ export default function LoginPage() {
             setLoading(false);
         }
     };
-    };
 
     return (
         <div className="flex justify-center items-center">

@@ -10,12 +10,12 @@ interface NavItem {
 }
 
 // Props du composant principal
-interface BottomNavbarProps {
+interface TabBarProps {
     items?: NavItem[];
 }
 
 // Composant par défaut avec emplacements pour vos propres SVG
-const BottomNavbar = ({ items }: BottomNavbarProps) => {
+const TabBar = ({ items }: TabBarProps) => {
     const pathname = usePathname();
 
     // Navigation par défaut - à remplacer avec vos propres SVG et libellés
@@ -89,4 +89,4 @@ const BottomNavbar = ({ items }: BottomNavbarProps) => {
     );
 };
 
-export default BottomNavbar;
+export default TabBar;

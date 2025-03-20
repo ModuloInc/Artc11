@@ -1,5 +1,6 @@
 import CategoryCard from "@/components/CategoryCard";
 import NewsCarousel from "@/components/NewsCarousel";
+import TabBar from "@/components/TabBar";
 
 export default async function Home() {
 
@@ -29,11 +30,11 @@ export default async function Home() {
                 </div>
                 <div className="grid grid-cols-3 gap-4 p-2">
                     {categories.map((category, index) => (
-                        <CategoryCard key={index} name={category.name} imageSrc={category.imageSrc}
-                                      link={category.link}/>
+                        <CategoryCard key={index} name={category.name} imageSrc={category.imageSrc} url={category.link }/>
                     ))}
                 </div>
             </div>
+            <TabBar />
         </>
     );
 }
