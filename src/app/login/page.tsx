@@ -33,7 +33,7 @@ export default function LoginPage() {
             localStorage.setItem("userId", data.user?.id || "");
 
             // Redirection vers la page de profil après connexion
-            router.push("/profile");
+            router.push("/");
         } catch (error) {
             console.error("Login error:", error);
             alert("An error occurred during login");
