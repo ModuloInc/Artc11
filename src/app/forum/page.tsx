@@ -24,7 +24,7 @@ export default function Forum() {
                                     <path d="M13 10h7.78"/>
                                 </svg>
                             </div>
-                            <p className="text-center text-sm font-medium">Climate & Environment</p>
+                            <p className="text-center text-sm font-medium">Environment</p>
                         </div>
                     </Link>
 
@@ -60,7 +60,7 @@ export default function Forum() {
                                     <path d="M18 4H6"/>
                                 </svg>
                             </div>
-                            <p className="text-center text-sm font-medium">Democracy and Human Rights</p>
+                            <p className="text-center text-sm font-medium">Democracy</p>
                         </div>
                     </Link>
                     {/* Entertainment */}
