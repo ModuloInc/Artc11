@@ -3,10 +3,10 @@ import { prisma } from "@/lib/db";
 
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    context: { params: { id: string } }
 ) {
     try {
-        const questionId = params.id;
+        const questionId = context.params.id;
 
         // Récupérer tous les votes pour cette question
         const votes = await prisma.vote.findMany({
