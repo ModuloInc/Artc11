@@ -7,22 +7,39 @@ export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
-        const res = await fetch("/api/auth/login", {
-            method: "POST",
-            body: JSON.stringify({email, password}),
-            headers: {"Content-Type": "application/json"},
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            alert(data.error || "Login failed");
-            return;
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || "Login failed");
+                return;
+            }
+
+            // Stocker les informations de l'utilisateur dans localStorage
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userFullname", data.user?.fullname || "");
+            localStorage.setItem("userId", data.user?.id || "");
+
+            // Redirection vers la page de profil après connexion
+            router.push("/profile");
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("An error occurred during login");
+        } finally {
+            setLoading(false);
         }
-
-        router.push("/profile");
     };
 
     return (
@@ -48,6 +65,8 @@ export default function LoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
+                                disabled={loading}
+
                             />
                         </div>
 
@@ -61,6 +80,8 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
+                                    disabled={loading}
+
                                 />
                             </div>
 
@@ -70,6 +91,7 @@ export default function LoginPage() {
                                     className="text-blue-600 underline text-sm"
                                     onClick={() => router.push("/forgot-password")}
                                     type="button"
+                                    disabled={loading}
                                 >
                                     Forgot password?
                                 </button>
@@ -81,6 +103,7 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 className="w-[157px] h-[48px] bg-[#2A51A0] text-white font-semibold rounded-full shadow-md hover:bg-blue-700"
+                                disabled={loading}
                             >
                                 Sign in
                             </button>
@@ -90,6 +113,7 @@ export default function LoginPage() {
                     <button
                         onClick={() => router.push("/register")}
                         className="mt-4 text-[#2A51A0] font-bold text-sm"
+                        disabled={loading}
                     >
                         Register
                     </button>

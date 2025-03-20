@@ -6,11 +6,12 @@ import Link from "next/link";
 interface CategoryCardProps {
     name: string;
     imageSrc: string;
+    url: string;
 }
 
-export default function CategoryCard({ name, imageSrc, link }: CategoryCardProps) {
+export default function CategoryCard({ name, imageSrc, url }: CategoryCardProps) {
     return (
-        <Link href={link}>
+        <Link href={url}>
             <div className="relative w-full h-20  rounded-lg  shadow-lg transition-transform bg-black bg-opacity-50">
                 <Image
                     src={imageSrc}
