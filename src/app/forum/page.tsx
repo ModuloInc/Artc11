@@ -3,11 +3,13 @@ import Link from "next/link";
 
 export default function Forum() {
     return (<>
-            <div
-                className="border-l-2 border-r-2 border-b-2 border-gray-600 rounded-bl-3xl rounded-br-3xl py-5 w-full max-w-md">
-                <h2 className="text-center text-3xl font-bold text-black">Forum</h2>
+            <div className="mb-6 container flex justify-center">
+                <div
+                    className="border-l-2 border-r-2 border-b-2 border-gray-600 rounded-bl-3xl rounded-br-3xl py-5 w-75 max-w-md">
+                    <h2 className="text-center text-3xl font-bold text-black">Forum</h2>
+                </div>
             </div>
-            <div className="bg-gray-100 p-4 min-h-screen">
+            <div className="p-4 min-h-screen">
                 <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
                     {/* Climate & Environment */}
                     <Link href="/forum/Environment">

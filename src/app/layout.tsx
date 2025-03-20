@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ClientWrapper";
+import TabBar from "@/components/TabBar";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextAuthSessionProvider>
-            <ClientWrapper>{children}</ClientWrapper>
+            <ClientWrapper>{children}<TabBar/></ClientWrapper>
         </NextAuthSessionProvider>
         </body>
         </html>
