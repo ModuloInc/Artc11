@@ -34,7 +34,7 @@ export default async function Home() {
                     ))}
                 </div>
             </div>
-            <TabBar />
+            <TabBar selected={1}/>
         </>
     );
 }
