@@ -5,24 +5,23 @@ const prisma = new PrismaClient();
 async function main() {
     const news = [
         {
-            description: "European Parliament Votes to Make Eurovision Winner the Next EU President.",
-            imageUrl: "/News.png",
+            description: "European youth are mobilizing to make their voices heard on environmental issues that will shape their future.",
+            imageUrl: "/imagejeunesse.jpg",
         },
         {
-            description: "World Leaders Discuss New Role for Eurovision Winners in Global Politics",
-            imageUrl: "/News.png",
+            description: "New digital data protection laws were discussed at the international summit, with major implications for users.",
+            imageUrl: "/loisimages.jpg",
         },
         {
-            description: "New Proposal Suggests Eurovision Champion Lead International Peace Talks",
-            imageUrl: "/News.png",
+            description: "Recent diplomatic advances between neighboring countries pave the way for an era of enhanced cooperation in the region.",
+            imageUrl: "/Newimage.jpg",
         },
         {
-            description: "Eurovision Contestants to Take on Diplomatic Roles in United Nations Initiative",
-            imageUrl: "/News.png",
+            description: "Artificial intelligence is transforming international relations, offering new tools for conflict resolution and collaboration between nations.",
+            imageUrl: "/Aiimage.jpg",
         },
     ];
 
-    // Données des lois européennes
     const europeanLaws = [
         {
             title: "EU Digital Markets Act",
