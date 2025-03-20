@@ -4,6 +4,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+interface Session {
+    user: {
+        id: string
+        name?: string | null
+        email?: string | null
+        image?: string | null
+    }
+}
+
 export const authOptions: AuthOptions = {
     providers: [
         GoogleProvider({
@@ -44,7 +53,7 @@ export const authOptions: AuthOptions = {
         },
         async session({ session, token }) {
             if (session.user && token.sub) {
-                session.user.id = token.sub; // Ajoute l'ID utilisateur dans la session
+                (session.user as any).id = token.sub;
             }
             return session;
         },
