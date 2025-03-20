@@ -38,15 +38,6 @@ export default function VotePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Vérification de l'authentification
-    useEffect(() => {
-        const userEmail = localStorage.getItem("userEmail");
-
-        if (!userEmail) {
-            router.push("/login");
-        }
-    }, [router]);
-
     // Récupérer les questions
     useEffect(() => {
         async function fetchQuestions() {
@@ -76,6 +67,12 @@ export default function VotePage() {
     const handleVote = async (value: -1 | 0 | 1) => {
         const userEmail = localStorage.getItem("userEmail");
 
+        if (!userEmail) {
+            // Redirect to login if not authenticated when trying to vote
+            router.push("/login");
+            return;
+        }
+
         if (!userEmail || !questions.length) return;
         if (isVoting) return;
 
@@ -100,7 +97,7 @@ export default function VotePage() {
             }
 
             // Récupérer les statistiques pour cette question
-            const statsRes = await fetch(`/api/questions/${currentQuestion.id}/stats`);
+            const statsRes = await fetch(`/api/question-stats?id=${currentQuestion.id}`);
 
             if (!statsRes.ok) {
                 throw new Error("Failed to fetch stats");
@@ -157,23 +154,23 @@ export default function VotePage() {
 
     if (!showDetails) {
         return (
-            <div className="flex flex-col min-h-screen bg-white">
+            <div className="flex flex-col min-h-screen px-4 mb-20">
                 {/* Header */}
-                <div className="pt-4 pb-2 px-6">
-                    <div className="flex items-center">
-                        <Image src={Logo} alt="Logo" width={65} height={30} />
-                    </div>
-                    <div className="border-b border-gray-300 mt-4"></div>
-                </div>
+                {/*<div className="pt-4 pb-2 px-6">*/}
+                {/*    <div className="flex items-center">*/}
+                {/*        <Image src={Logo} alt="Logo" width={65} height={30} />*/}
+                {/*    </div>*/}
+                {/*    <div className="border-b border-gray-300 mt-4"></div>*/}
+                {/*</div>*/}
 
                 {/* Main content with full-screen image and overlay */}
-                <div className="flex-1 flex flex-col relative">
+                <div className="flex flex-col relative h-120 mt-6">
                     {/* Stacked cards effect */}
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 h-101 mx-auto">
                         <div
-                            className="absolute inset-0 bg-blue-200 rounded-3xl transform rotate-1 translate-x-2 translate-y-4"></div>
+                            className="absolute inset-0 bg-blue-200 rounded-3xl transform rotate-1 translate-x-2 translate-y-4 m-3"></div>
                         <div
-                            className="absolute inset-0 bg-yellow-100 rounded-3xl transform -rotate-2 -translate-x-2 translate-y-2"></div>
+                            className="absolute inset-0 bg-yellow-100 rounded-3xl transform -rotate-2 -translate-x-2 translate-y-2 m-3"></div>
                     </div>
 
                     {/* Main pink card with image background */}
@@ -187,16 +184,16 @@ export default function VotePage() {
                             }}
                         >
                             {/* Pink overlay */}
-                            <div className="absolute inset-0 bg-pink-200 bg-opacity-80"></div>
+                            <div className="absolute inset-0 bg-pink-200 bg-opacity-80 rounded-3xl m-3 h-90 w-80"></div>
 
                             {/* Question text */}
-                            <div className="relative z-10 px-10 text-center">
-                                <h1 className="text-3xl font-bold text-gray-900 leading-tight">
+                            <div className="relative z-10 px-10 text-center mx-auto">
+                                <h1 className="text-2xl font-bold text-gray-900 leading-tight m-2">
                                     Do you believe the government should play a larger role in regulating the economy?
                                 </h1>
 
                                 {/* See More button */}
-                                <div className="mt-32 mb-8">
+                                <div className="mt-15 mb-8">
                                     <button
                                         onClick={() => setShowDetails(true)}
                                         className="mx-auto flex items-center justify-between border border-gray-800 rounded-full px-6 py-2"
@@ -216,7 +213,7 @@ export default function VotePage() {
                 </div>
 
                 {/* Boutons de votes (toujours visibles mais en bas) */}
-                <div className="py-4 px-4 mb-8">
+                <div className="py-4 px-4 mb-8 scale-75">
                     <div className="bg-pink-100 rounded-full py-6 px-6 flex justify-around">
                         <button
                             className="rounded-full bg-white w-16 h-16 flex items-center justify-center shadow-md"
@@ -235,12 +232,13 @@ export default function VotePage() {
                         </button>
                     </div>
                 </div>
+                <TabBar selected={2}/>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-200">
+        <div className="flex flex-col min-h-screen bg-gray-200 m-6">
             {/* Header avec la catégorie */}
             <div className="bg-gray-200 py-4 px-6 text-center relative">
                 <div className="absolute left-4 top-4">
@@ -346,7 +344,8 @@ export default function VotePage() {
                                     </p>
                                 </div>
 
-                                <div className="relative mt-4">
+                                {/* chat bot */}
+                                {/*<div className="relative mt-4">
                                     <div className="flex justify-center mt-2">
                                         <div className="bg-white rounded-full py-2 px-6 inline-flex items-center">
                                             <div className="bg-blue-500 rounded-full p-1 mr-2">
@@ -358,7 +357,7 @@ export default function VotePage() {
                                             <p className="text-gray-500 text-sm">I'm chatting with a chatbot...</p>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
                         </div>
                     )}
@@ -366,8 +365,8 @@ export default function VotePage() {
 
                 {/* Boutons de votes */}
                 {!showStats && (
-                    <div className="py-4 px-4 mb-8">
-                        <div className="bg-pink-100 rounded-full py-6 px-6 flex justify-around">
+                    <div className="py-4 px-4 mb-2">
+                        <div className="bg-pink-100 rounded-full py-6 px-6 flex justify-around scale-75">
                             <button
                                 onClick={() => handleVote(-1)}
                                 disabled={isVoting}
@@ -393,7 +392,7 @@ export default function VotePage() {
                     </div>
                 )}
             </div>
-            <TabBar />
+            <TabBar selected={2}/>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import {useState} from "react";
+import {useRouter} from "next/navigation";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -14,8 +14,8 @@ export default function RegisterPage() {
 
         const res = await fetch("/api/auth/register", {
             method: "POST",
-            body: JSON.stringify({ fullname, email, password }),
-            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({fullname, email, password}),
+            headers: {"Content-Type": "application/json"},
         });
 
         const data = await res.json();
@@ -32,9 +32,9 @@ export default function RegisterPage() {
         <div className="h-screen flex justify-center items-center">
             {/* Carte centrée verticalement */}
             <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] p-6 flex flex-col items-center justify-center">
-
                 {/* LOGO */}
-                <div className="w-[226px] h-[117px] flex justify-center mb-6">
+                <div className="w-[226px] h-[117px] flex justify-center mb-6 cursor-pointer"
+                     onClick={() => router.push('/')}>
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
 

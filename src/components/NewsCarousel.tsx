@@ -50,8 +50,8 @@ export default function NewsCarousel() {
                                     <div className="relative w-full h-48 sm:h-56 md:h-64">
                                         <Image src={newsItem.imageUrl} alt={newsItem.description} fill className="object-cover opacity-75" />
                                     </div>
-                                    <div className="p-2">
-                                        <p className="text-[#002266] text-[20px] font-medium mt-2">{newsItem.description}</p>
+                                    <div className="">
+                                        <p className="text-[#002266] text-[15px] font-medium mt-2">{newsItem.description}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>
