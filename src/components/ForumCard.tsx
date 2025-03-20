@@ -1,84 +1,57 @@
-"use client"
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+// components/ForumCard.tsx
+import React from 'react';
+import Link from 'next/link';
+import { Post, User, ForumCategory } from '@prisma/client';
 
-type QuestionCardProps = {
-  id: string;
-  title: string;
-  description: string;
-  voteCount: number;
-  commentCount: number;
-  userVoted: boolean;
+type ForumCardProps = {
+    post: Post & {
+        author: User;
+        category?: ForumCategory;
+    };
 }
 
-export default function QuestionCard({
-                                       id,
-                                       title,
-                                       description,
-                                       voteCount = 0,
-                                       commentCount = 0,
-                                       userVoted = false
-                                     }: QuestionCardProps) {
-  const router = useRouter();
-  const [votes, setVotes] = useState(voteCount);
-  const [liked, setLiked] = useState(userVoted);
+const ForumCard: React.FC<ForumCardProps> = ({ post }) => {
+    // Format the date
+    const formattedDate = new Date(post.createdAt).toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
-  const handleVote = async () => {
-    try {
-      setVotes(liked ? votes - 1 : votes + 1);
-      setLiked(!liked);
-
-      const response = await fetch(`/api/questions/${id}/vote`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ vote: !liked }),
-      });
-
-      if (!response.ok) {
-        setVotes(liked ? votes : votes - 1);
-        setLiked(liked);
-        console.error('Failed to update vote');
-      }
-
-      router.refresh();
-    } catch (error) {
-      console.error('Error voting:', error);
-      setVotes(liked ? votes : votes - 1);
-      setLiked(liked);
-    }
-  };
-
-  return (
-      <div className="max-w-xl mx-auto p-6 bg-white border-t border-gray-700">
-        <h2 className="text-sm font-bold mb-3 text-left">
-          {title}
-        </h2>
-        <p className="text-black mb-4 text-xs text-left">
-          {description}
-        </p>
-        <div className="flex items-center space-x-4">
-          <button
-              onClick={handleVote}
-              className={`flex items-center px-4 py-2 rounded-lg transition ${
-                  liked ? "bg-blue-100 text-blue-600" : "bg-gray-100 hover:bg-gray-200"
-              }`}
-          >
-            <span className="text-sm">{liked ? "🔼" : "⬆️"}</span>
-            <span className="ml-2 text-gray-700 font-medium">{votes}</span>
-          </button>
-          <button className="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-lg transition">
-            <span className="text-sm">💬</span>
-            <span className="ml-2 text-gray-700 font-medium">{commentCount}</span>
-          </button>
-          <button
-              onClick={() => router.push(`/questions/${id}`)}
-              className="ml-auto text-gray-500 hover:text-gray-700 active:text-gray-900 transition"
-          >
-            ↗️
-          </button>
+    return (
+        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden my-4">
+            <div className="p-6">
+                <div className="flex items-center mb-2">
+                    {/* Use the user's image field if available, otherwise use a placeholder */}
+                    <img
+                        className="h-10 w-10 rounded-full mr-3"
+                        src={post.author.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=fallback'}
+                        alt={`Avatar de ${post.author.fullname || 'Utilisateur'}`}
+                    />
+                    <div>
+                        <p className="text-sm font-medium text-gray-900">{post.author.fullname || 'Utilisateur'}</p>
+                        <p className="text-xs text-gray-500">{formattedDate}</p>
+                    </div>
+                </div>
+                <Link href={`/forum/post/${post.id}`} className="block">
+                    <h3 className="text-lg font-medium text-gray-900 hover:text-indigo-600 transition mb-2">
+                        {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-3 text-left">
+                        {post.content}
+                    </p>
+                </Link>
+                <div className="mt-4">
+                    <Link
+                        href={`/forum/post/${post.id}`}
+                        className="text-indigo-600 hover:text-indigo-800 text-sm font-semibold"
+                    >
+                        Lire la suite →
+                    </Link>
+                </div>
+            </div>
         </div>
-      </div>
-  );
-}
+    );
+};
+
+export default ForumCard;
