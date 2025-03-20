@@ -318,7 +318,7 @@ export default function VotePage() {
                                     onClick={goToNextQuestion}
                                     className="w-full bg-blue-500 text-white py-3 px-4 rounded-full shadow-md font-medium"
                                 >
-                                    Next Question
+                                    Next Questions
                                 </button>
                             </div>
                         </div>
