@@ -134,7 +134,7 @@ export default function VotePage() {
         return (
             <div className="flex flex-col min-h-screen bg-white">
                 <div className="flex-1 flex items-center justify-center">
-                    <div className="text-2xl font-bold text-gray-600">Loading...</div>
+                    <div className="text-2xl font-bold text-gray-600">Loading....</div>
                 </div>
             </div>
         );
