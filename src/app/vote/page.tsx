@@ -100,7 +100,7 @@ export default function VotePage() {
             }
 
             // Récupérer les statistiques pour cette question
-            const statsRes = await fetch(`/api/questions/${currentQuestion.id}/stats`);
+            const statsRes = await fetch(`/api/question-stats?id=${currentQuestion.id}`);
 
             if (!statsRes.ok) {
                 throw new Error("Failed to fetch stats");
