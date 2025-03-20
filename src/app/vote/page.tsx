@@ -38,15 +38,6 @@ export default function VotePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Vérification de l'authentification
-    useEffect(() => {
-        const userEmail = localStorage.getItem("userEmail");
-
-        if (!userEmail) {
-            router.push("/login");
-        }
-    }, [router]);
-
     // Récupérer les questions
     useEffect(() => {
         async function fetchQuestions() {
@@ -75,6 +66,12 @@ export default function VotePage() {
 
     const handleVote = async (value: -1 | 0 | 1) => {
         const userEmail = localStorage.getItem("userEmail");
+
+        if (!userEmail) {
+            // Redirect to login if not authenticated when trying to vote
+            router.push("/login");
+            return;
+        }
 
         if (!userEmail || !questions.length) return;
         if (isVoting) return;
@@ -167,9 +164,9 @@ export default function VotePage() {
                 {/*</div>*/}
 
                 {/* Main content with full-screen image and overlay */}
-                <div className="flex flex-col relative h-120">
+                <div className="flex flex-col relative h-120 mt-6">
                     {/* Stacked cards effect */}
-                    <div className="absolute inset-0 z-0 h-100 mx-auto">
+                    <div className="absolute inset-0 z-0 h-101 mx-auto">
                         <div
                             className="absolute inset-0 bg-blue-200 rounded-3xl transform rotate-1 translate-x-2 translate-y-4 m-3"></div>
                         <div
@@ -187,7 +184,7 @@ export default function VotePage() {
                             }}
                         >
                             {/* Pink overlay */}
-                            <div className="absolute inset-0 bg-pink-200 bg-opacity-80 rounded-3xl m-3 h-100 w-80"></div>
+                            <div className="absolute inset-0 bg-pink-200 bg-opacity-80 rounded-3xl m-3 h-90 w-80"></div>
 
                             {/* Question text */}
                             <div className="relative z-10 px-10 text-center mx-auto">

@@ -48,7 +48,7 @@ export default function LoginPage() {
                 <br/>
                 <br/>
                 {/* LOGO */}
-                <div className=" flex justify-center mb-6">
+                <div className="flex justify-center mb-6 cursor-pointer" onClick={() => router.push('/')}>
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
                 <br/>
