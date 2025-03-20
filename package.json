@@ -20,7 +20,7 @@
     "swiper": "^11.2.5"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.0.14",
     "@types/animejs": "^3.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
