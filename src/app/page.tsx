@@ -132,7 +132,7 @@ export default function Home() {
                     </div>
                 </Link>
                 <div className="rounded-t-lg text-left px-2 mt-3 mb-4">
-                    <h2 className="text-[#002266] text-[25px] font-semibold">European Laws</h2>
+                    <h2 className="text-[#002266] text-[25px] font-semibold">New European Laws</h2>
                 </div>
                 <div className="w-full mb-6">
                     {loading ? (
