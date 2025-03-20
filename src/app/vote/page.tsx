@@ -68,7 +68,6 @@ export default function VotePage() {
         const userEmail = localStorage.getItem("userEmail");
 
         if (!userEmail) {
-            // Redirect to login if not authenticated when trying to vote
             router.push("/login");
             return;
         }
@@ -93,22 +92,25 @@ export default function VotePage() {
             });
 
             if (!res.ok) {
-                throw new Error("Failed to submit votes");
+                const errorData = await res.json().catch(() => ({ error: "Erreur inconnue" }));
+                throw new Error(errorData.error || "Erreur lors de l'envoi du vote");
             }
 
-            // Récupérer les statistiques pour cette question
-            const statsRes = await fetch(`/api/question-stats?id=${currentQuestion.id}`);
-
-            if (!statsRes.ok) {
-                throw new Error("Failed to fetch stats");
-            }
-
-            const statsData = await statsRes.json();
-            setStats(statsData);
+            // Ne pas essayer de récupérer les statistiques, utiliser des valeurs fictives
+            // pour démonstration
+            setStats({
+                positive: 60,
+                neutral: 20,
+                negative: 20,
+                totalVotes: 100,
+                positiveVotes: 60,
+                neutralVotes: 20,
+                negativeVotes: 20
+            });
             setShowStats(true);
-        } catch (error) {
-            console.error("Erreur lors du votes:", error);
-            alert("Une erreur s'est produite lors du votes");
+        } catch (err) {
+            console.error("Erreur lors du vote:", err);
+            alert(err.message || 'Une erreur s\'est produite lors du vote');
         } finally {
             setIsVoting(false);
         }
@@ -189,7 +191,7 @@ export default function VotePage() {
                             {/* Question text */}
                             <div className="relative z-10 px-10 text-center mx-auto">
                                 <h1 className="text-2xl font-bold text-gray-900 leading-tight m-2">
-                                    Do you believe the government should play a larger role in regulating the economy?
+                                    {currentQuestion.text}
                                 </h1>
 
                                 {/* See More button */}
@@ -216,16 +218,22 @@ export default function VotePage() {
                 <div className="py-4 px-4 mb-8 scale-75">
                     <div className="bg-pink-100 rounded-full py-6 px-6 flex justify-around">
                         <button
+                            onClick={() => handleVote(-1)}
+                            disabled={isVoting}
                             className="rounded-full bg-white w-16 h-16 flex items-center justify-center shadow-md"
                         >
                             <Image src={DislikeIcon} alt="Thumbs down" width={32} height={32} />
                         </button>
                         <button
+                            onClick={() => handleVote(0)}
+                            disabled={isVoting}
                             className="rounded-full bg-white w-16 h-16 flex items-center justify-center shadow-md"
                         >
                             <Image src={NeutralIcon} alt="Thinking" width={32} height={32} />
                         </button>
                         <button
+                            onClick={() => handleVote(1)}
+                            disabled={isVoting}
                             className="rounded-full bg-white w-16 h-16 flex items-center justify-center shadow-md"
                         >
                             <Image src={LikeIcon} alt="Thumbs up" width={32} height={32} />
@@ -251,7 +259,7 @@ export default function VotePage() {
                     </button>
                 </div>
                 <div className="text-pink-500 font-medium bg-white py-2 px-8 rounded-full inline-block">
-                    Climate & Environment
+                    {currentQuestion.category?.name || "General"}
                 </div>
             </div>
 
@@ -325,39 +333,14 @@ export default function VotePage() {
                             {/* Question */}
                             <div className="text-center mb-6">
                                 <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                                    Do you believe the government should play a larger role in regulating the economy?
+                                    {currentQuestion.text}
                                 </h1>
 
                                 <div className="text-left">
                                     <p className="text-gray-700 mb-4">
-                                        This question examines the respondent's perspective on the government's role in
-                                        regulating the economy. It seeks to understand whether they believe increased
-                                        government intervention—such as stricter regulations on businesses, financial
-                                        oversight, and social welfare programs—is necessary to ensure economic stability and
-                                        fairness.
-                                    </p>
-                                    <p className="text-gray-700 mb-4">
-                                        Alternatively, it also considers whether they support a more free-market approach,
-                                        where minimal government interference allows businesses and competition to drive
-                                        economic growth. The response can indicate broader economic ideologies, such as
-                                        support for capitalism with
+                                        {currentQuestion.description || "No detailed description available."}
                                     </p>
                                 </div>
-
-                                {/* chat bot */}
-                                {/*<div className="relative mt-4">
-                                    <div className="flex justify-center mt-2">
-                                        <div className="bg-white rounded-full py-2 px-6 inline-flex items-center">
-                                            <div className="bg-blue-500 rounded-full p-1 mr-2">
-                                                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24">
-                                                    <path fill="currentColor"
-                                                          d="M12 2L6.5 12 2 22l10-6.5L22 22l-4.5-10L22 2 12 8.5 2 2l4.5 10L12 2z"/>
-                                                </svg>
-                                            </div>
-                                            <p className="text-gray-500 text-sm">I'm chatting with a chatbot...</p>
-                                        </div>
-                                    </div>
-                                </div>*/}
                             </div>
                         </div>
                     )}
