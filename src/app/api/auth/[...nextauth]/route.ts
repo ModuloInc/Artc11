@@ -1,6 +1,6 @@
-import NextAuth, { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth from "next-auth";
 import { PrismaClient } from "@prisma/client";
+import { AuthOptions } from "next-auth";
 
 const prisma = new PrismaClient();
 
@@ -13,43 +13,36 @@ interface Session {
     }
 }
 
-export const authOptions: AuthOptions = {
-    providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        }),
-    ],
+const authOptions: AuthOptions = {
+    providers: [],
     callbacks: {
         async signIn({ user }) {
             const { name, email } = user;
 
             if (!email) {
-                console.error("❌ Erreur : L'email est requis pour l'authentification Google");
+                console.error("❌ Erreur : L'email est requis pour l'authentification");
                 return false;
             }
 
             try {
-                // Vérifier si l'utilisateur existe déjà
                 const existingUser = await prisma.user.findUnique({ where: { email } });
 
                 if (!existingUser) {
-                    // Créer un nouvel utilisateur
                     await prisma.user.create({
                         data: {
-                            fullname: name || "Utilisateur Google",
+                            fullname: name || "Utilisateur",
                             email,
-                            password: "", // Pas de mot de passe stocké pour Google
+                            password: "",
                         },
                     });
-                    console.log("✅ Utilisateur Google créé :", email);
+                    console.log("✅ Utilisateur créé :", email);
                 }
             } catch (error) {
                 console.error("❌ Erreur lors de l'enregistrement de l'utilisateur :", error);
                 return false;
             }
 
-            return true; // Autorise la connexion
+            return true;
         },
         async session({ session, token }) {
             if (session.user && token.sub) {
@@ -59,7 +52,7 @@ export const authOptions: AuthOptions = {
         },
         async jwt({ token, user }) {
             if (user) {
-                token.sub = user.id; // Stocke l'ID utilisateur dans le JWT
+                token.sub = user.id;
             }
             return token;
         },
@@ -69,7 +62,7 @@ export const authOptions: AuthOptions = {
         strategy: "jwt",
     },
     pages: {
-        signIn: "/login", // Redirige vers la page de connexion
+        signIn: "/login",
     },
 };
 

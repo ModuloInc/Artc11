@@ -179,7 +179,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
-            <TabBar />
+            <TabBar selected={4}/>
         </div>
     );
 }

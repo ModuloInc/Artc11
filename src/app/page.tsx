@@ -180,7 +180,7 @@ export default function Home() {
                     law={selectedLaw}
                 />
             )}
-            <TabBar/>
+            <TabBar selected={1}/>
         </>
     );
 }

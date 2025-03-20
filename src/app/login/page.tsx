@@ -33,7 +33,7 @@ export default function LoginPage() {
             localStorage.setItem("userId", data.user?.id || "");
 
             // Redirection vers la page de profil après connexion
-            router.push("/profile");
+            router.push("/");
         } catch (error) {
             console.error("Login error:", error);
             alert("An error occurred during login");
@@ -48,7 +48,7 @@ export default function LoginPage() {
                 <br/>
                 <br/>
                 {/* LOGO */}
-                <div className=" flex justify-center mb-6">
+                <div className="flex justify-center mb-6 cursor-pointer" onClick={() => router.push('/')}>
                     <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
                 </div>
                 <br/>

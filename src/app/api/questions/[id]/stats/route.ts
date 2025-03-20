@@ -1,12 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
     try {
-        const questionId = params.id;
+        // Récupérer l'ID de la question depuis les paramètres de la requête
+        const { searchParams } = new URL(request.url);
+        const questionId = searchParams.get('id');
+
+        if (!questionId) {
+            return NextResponse.json(
+                { error: "ID de question requis" },
+                { status: 400 }
+            );
+        }
 
         // Récupérer tous les votes pour cette question
         const votes = await prisma.vote.findMany({
