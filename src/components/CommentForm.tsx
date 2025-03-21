@@ -86,7 +86,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId }) => {
 
     return (
         <div className="mt-8 bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-lg font-semibold mb-4">Ajouter un commentaire</h3>
+            <h3 className="text-lg font-semibold mb-4">Add a comment</h3>
 
             {error && (
                 <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
@@ -96,13 +96,13 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId }) => {
 
             {success && (
                 <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md">
-                    Votre commentaire a été publié avec succès!
+                    Your comment has been successfully posted!
                 </div>
             )}
 
             {!userEmail ? (
                 <div className="mb-4 p-3 bg-blue-100 text-blue-700 rounded-md">
-                    Vous devez vous <a href="/login" className="underline font-semibold">connecter</a> pour ajouter un commentaire.
+                    You need to <a href="/login" className="underline font-semibold">log in</a> to add a comment.
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>

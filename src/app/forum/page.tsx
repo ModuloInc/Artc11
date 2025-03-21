@@ -51,7 +51,7 @@ export default async function Forum() {
                     <h2 className="text-center text-3xl font-bold text-black">Forum</h2>
                 </div>
             </div>
-            <div className="p-4 min-h-screen">
+            <div className="p-4 min-h-screen mb-20">
                 <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
                     {categories.map((category) => {
                         // Obtenir la couleur de fond correspondante ou utiliser un blanc par défaut
