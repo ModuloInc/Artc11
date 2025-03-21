@@ -45,7 +45,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     });
 
     return (
-        <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto px-4 py-8 pb-20">
             <div className="mb-6">
                 <Link
                     href={`/forum/${post.category.slug}`}
