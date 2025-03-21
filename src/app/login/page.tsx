@@ -8,6 +8,8 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [guestLoading, setGuestLoading] = useState(false);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,6 +41,38 @@ export default function LoginPage() {
             alert("An error occurred during login");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleGuestLogin = async () => {
+        setGuestLoading(true);
+
+        try {
+            const res = await fetch("/api/auth/guest-login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || "Guest login failed");
+                return;
+            }
+
+            // Stocker les informations de l'utilisateur invité dans localStorage
+            localStorage.setItem("userEmail", data.user.email);
+            localStorage.setItem("userFullname", data.user.fullname);
+            localStorage.setItem("userId", data.user.id);
+            localStorage.setItem("isGuestUser", "true");
+
+            // Redirection vers la page d'accueil
+            router.push("/");
+        } catch (error) {
+            console.error("Guest login error:", error);
+            alert("An error occurred during guest login");
+        } finally {
+            setGuestLoading(false);
         }
     };
 
@@ -109,6 +143,17 @@ export default function LoginPage() {
                             </button>
                         </div>
                     </form>
+
+                    {/* Bouton Guest for Demo */}
+                    <div className="flex justify-center mt-4">
+                        <button
+                            onClick={handleGuestLogin}
+                            className="w-[200px] h-[42px] border border-[#2A51A0] text-[#2A51A0] font-semibold rounded-full hover:bg-gray-100 disabled:opacity-70"
+                            disabled={loading || guestLoading}
+                        >
+                            {guestLoading ? "Creating guest..." : "Guest for Demo"}
+                        </button>
+                    </div>
 
                     <button
                         onClick={() => router.push("/register")}
