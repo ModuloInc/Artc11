@@ -51,7 +51,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                     href={`/forum/${post.category.slug}`}
                     className="text-indigo-600 hover:text-indigo-800 mb-4 inline-block"
                 >
-                    ← Retour à {post.category.name}
+                    ← Back to {post.category.name}
                 </Link>
             </div>
 
@@ -86,7 +86,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                 </h2>
 
                 {post.comments.length === 0 ? (
-                    <p className="text-gray-500">Aucun commentaire pour l'instant.</p>
+                    <p className="text-gray-500">No comments yet.</p>
                 ) : (
                     <div className="space-y-4">
                         {post.comments.map((comment) => (
@@ -115,7 +115,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                         href="/forum"
                         className="inline-block px-6 py-2 bg-[#2A51A0] text-white rounded-lg hover:bg-blue-700 transition"
                     >
-                        Retour au forum
+                        Back to forum
                     </Link>
                 </div>
             </div>

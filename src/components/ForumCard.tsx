@@ -46,7 +46,7 @@ const ForumCard: React.FC<ForumCardProps> = ({ post }) => {
                         href={`/forum/post/${post.id}`}
                         className="text-indigo-600 hover:text-indigo-800 text-sm font-semibold"
                     >
-                        Lire la suite →
+                        Read more →
                     </Link>
                 </div>
             </div>
