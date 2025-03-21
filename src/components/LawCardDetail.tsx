@@ -62,7 +62,7 @@ export default function LawDetailModal({ isOpen, onClose, law }: LawDetailModalP
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-opacity-50 flex items-center justify-center p-4">
             <div
                 ref={modalRef}
                 className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col"
