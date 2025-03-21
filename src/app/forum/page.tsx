@@ -83,9 +83,9 @@ export default async function Forum() {
 
                 <div className="mt-12 max-w-md mx-auto">
                     <div className="bg-gray-100 rounded-lg p-4 shadow">
-                        <h3 className="text-center text-lg font-medium mb-3">Forum Communautaire</h3>
+                        <h3 className="text-center text-lg font-medium mb-3">Community Forum</h3>
                         <p className="text-gray-600 text-sm text-center">
-                            Rejoignez notre forum pour discuter sur divers sujets, partager vos idées et connecter avec d'autres membres.
+                            Join our forum to discuss various topics, share your ideas, and connect with other members.
                         </p>
                     </div>
                 </div>

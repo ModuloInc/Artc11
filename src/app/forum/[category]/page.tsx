@@ -50,7 +50,7 @@ export default async function ForumCategory({ params }: { params: { category: st
                     <h2 className="text-center text-3xl font-bold text-black">{data.category.name}</h2>
                 </div>
             </div>
-            <div className="p-4">
+            <div className="p-4 pb-20">
                 {data.posts.length === 0 ? (
                     <div className="text-center py-8">
                         <p className="text-gray-500">Aucune publication dans cette catégorie</p>
@@ -65,7 +65,7 @@ export default async function ForumCategory({ params }: { params: { category: st
                         href="/forum"
                         className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
                     >
-                        Retour au forum
+                        Back to forum
                     </Link>
                 </div>
             </div>

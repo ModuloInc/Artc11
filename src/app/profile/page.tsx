@@ -22,7 +22,7 @@ export default function ProfilePage() {
         async function fetchUserProfile() {
             try {
                 setLoading(true);
-
+/**/
                 // Récupérer les informations utilisateur depuis localStorage
                 const storedEmail = localStorage.getItem("userEmail");
 
@@ -102,7 +102,7 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#3B5998]">
+        <div className="min-h-screen flex flex-col">
             {/* Profile header with image */}
             <div className="flex justify-center pt-10 pb-6">
                 <div className="relative w-32 h-32">
@@ -145,7 +145,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Profile information */}
-            <div className="flex-1 bg-[#C1E3FF]/80 rounded-t-3xl px-4 py-6">
+            <div className="flex-1 /80 rounded-t-3xl px-4 py-6">
                 <div className="max-w-md mx-auto">
                     {/* Username field */}
                     <div className="mb-6">

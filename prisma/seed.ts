@@ -113,6 +113,22 @@ async function main() {
             categoryMap[cat.name] = cat.id;
         });
 
+        // Create news items first
+        for (const newsItem of news) {
+            const existingNews = await prisma.news.findFirst({
+                where: { description: newsItem.description },
+            });
+
+            if (!existingNews) {
+                await prisma.news.create({
+                    data: newsItem,
+                });
+                console.log(`✅ News item created: ${newsItem.description.substring(0, 30)}...`);
+            } else {
+                console.log(`⏩ News item already exists: ${newsItem.description.substring(0, 30)}...`);
+            }
+        }
+
         // Create questions
         const questions = [
             {
@@ -135,15 +151,6 @@ async function main() {
             },
         ];
 
-        // Create news items
-        for (const newsItem of news) {
-            await prisma.news.create({
-                data: newsItem,
-            });
-            console.log(`✅ News item created: ${newsItem.description.substring(0, 30)}...`);
-        }
-
-        // Create questions (now outside the news loop)
         for (const question of questions) {
             const existingQuestion = await prisma.question.findFirst({
                 where: { text: question.text },
@@ -264,7 +271,7 @@ async function main() {
             // If no users exist, create a demo user
             user = await prisma.user.create({
                 data: {
-                    fullname: "Demo User",
+                    fullname: "John_Politik",
                     email: "demo@example.com",
                     password: "hashed_password_here", // In a real app, this would be properly hashed
                     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=demo"
@@ -279,7 +286,7 @@ async function main() {
         const allForumCategories = await prisma.forumCategory.findMany();
 
         for (const category of allForumCategories) {
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 1; i++) {
                 const existingPost = await prisma.post.findFirst({
                     where: {
                         title: `${category.name} Post ${i}`,
@@ -291,7 +298,7 @@ async function main() {
                     await prisma.post.create({
                         data: {
                             title: `${category.name} Post ${i}`,
-                            content: `This is a sample post about ${category.name}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, quis aliquam nisl nunc quis nisl.`,
+                            content: `Should there be term limits for European leaders?`,
                             forumCategoryId: category.id,
                             authorId: user.id
                         }
