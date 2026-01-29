@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db";
 import CommentForm from "@/components/CommentForm";
 import TabBar from "@/components/TabBar";
 
+export const dynamic = "force-dynamic";
+
 const avatarFallback = "https://api.dicebear.com/7.x/avataaars/svg?seed=fallback";
 
 async function getPost(id: string) {

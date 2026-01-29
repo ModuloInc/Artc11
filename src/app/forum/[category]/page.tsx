@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import ForumCard from "@/components/ForumCard";
 import TabBar from "@/components/TabBar";
 
+export const dynamic = "force-dynamic";
+
 async function getCategoryWithPosts(slug: string) {
   const category = await prisma.forumCategory.findUnique({
     where: { slug: slug.toLowerCase() },

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import TabBar from "@/components/TabBar";
 
+export const dynamic = "force-dynamic";
+
 const categoryStyles: Record<string, string> = {
   Democracy: "bg-amber-100",
   Education: "bg-pink-100",
