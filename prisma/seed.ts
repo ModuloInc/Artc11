@@ -188,7 +188,86 @@ async function main() {
   }
   console.log(`✅ ${votesCreated} vote(s) créés`);
 
-  console.log("\n✅ Seed terminé. Comptes de test : *@example.com / " + SEED_PASSWORD);
+  // —— Forum (catégories + posts) ——
+  const forumCategoriesData = [
+    { name: "Democracy", slug: "democracy", color: "#92400e", bgColor: "bg-amber-100", iconPath: "" },
+    { name: "Education", slug: "education", color: "#9d174d", bgColor: "bg-pink-100", iconPath: "" },
+    { name: "Environment", slug: "environment", color: "#065f46", bgColor: "bg-emerald-100", iconPath: "" },
+    { name: "Society", slug: "society", color: "#166534", bgColor: "bg-green-100", iconPath: "" },
+    { name: "Technology", slug: "technology", color: "#0c4a6e", bgColor: "bg-sky-200", iconPath: "" },
+  ];
+
+  const forumCategoryIds: Record<string, string> = {};
+  for (const fc of forumCategoriesData) {
+    let existing = await prisma.forumCategory.findFirst({ where: { slug: fc.slug } });
+    if (!existing) {
+      existing = await prisma.forumCategory.create({
+        data: {
+          name: fc.name,
+          slug: fc.slug,
+          color: fc.color,
+          bgColor: fc.bgColor,
+          iconPath: fc.iconPath,
+        },
+      });
+    }
+    forumCategoryIds[fc.slug] = existing.id;
+  }
+  console.log(`✅ ${Object.keys(forumCategoryIds).length} catégorie(s) forum`);
+
+  const authorId = users[0]?.id;
+  if (authorId) {
+    const postsData = [
+      { title: "Participation citoyenne et vote", content: "Comment renforcer la participation des jeunes aux élections européennes ? Partagez vos idées.", slug: "democracy" },
+      { title: "Formation tout au long de la vie", content: "L'éducation ne s'arrête pas à l'école. Quelles pistes pour former les adultes aux enjeux du numérique ?", slug: "education" },
+      { title: "Transition énergétique : par où commencer ?", content: "Quelles actions concrètes pour réduire notre empreinte au quotidien ?", slug: "environment" },
+    ];
+    for (const p of postsData) {
+      const cid = forumCategoryIds[p.slug];
+      if (!cid) continue;
+      const exists = await prisma.post.findFirst({ where: { title: p.title } });
+      if (!exists) {
+        await prisma.post.create({
+          data: { title: p.title, content: p.content, forumCategoryId: cid, authorId },
+        });
+      }
+    }
+    console.log(`✅ Posts forum créés`);
+  }
+
+  // —— Lois européennes fictives ——
+  const lawsData = [
+    {
+      title: "Pacte vert pour l'Europe",
+      description: "Stratégie de croissance visant à transformer l'UE en société juste et prospère, dotée d'une économie moderne et efficace.",
+      fullText: "Le Pacte vert pour l'Europe est la feuille de route de la Commission pour rendre l'économie de l'UE durable. Il vise à transformer les défis climatiques et environnementaux en opportunités et à garantir une transition juste et inclusive.\n\nLes domaines d'action couvrent notamment la biodiversité, l'économie circulaire, la rénovation des bâtiments et la pollution.",
+      category: "Environnement",
+      imageUrl: "/News.png",
+    },
+    {
+      title: "Règlement sur les services numériques",
+      description: "Cadre harmonisé pour un environnement en ligne sûr, prévisible et responsabilisant.",
+      fullText: "Le règlement sur les services numériques (DSA) impose des obligations proportionnées aux plateformes en ligne. Il renforce la protection des utilisateurs et la lutte contre les contenus illicites, tout en favorisant l'innovation et la compétitivité du marché unique numérique.",
+      category: "Numérique",
+    },
+  ];
+  for (const law of lawsData) {
+    const exists = await prisma.europeanLaw.findFirst({ where: { title: law.title } });
+    if (!exists) {
+      await prisma.europeanLaw.create({
+        data: {
+          title: law.title,
+          description: law.description,
+          fullText: law.fullText,
+          category: law.category,
+          imageUrl: (law as { imageUrl?: string }).imageUrl ?? null,
+        },
+      });
+    }
+  }
+  console.log(`✅ Lois européennes créées`);
+
+  console.log("\n✅ Seed terminé. Comptes : *@example.com / " + SEED_PASSWORD);
 }
 
 main()

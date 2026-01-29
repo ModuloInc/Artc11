@@ -13,6 +13,24 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handleGuestLogin = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/guest-login", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Échec création invité");
+      localStorage.setItem("userEmail", data.user?.email ?? "");
+      localStorage.setItem("userFullname", data.user?.fullname ?? "");
+      localStorage.setItem("userId", data.user?.id ?? "");
+      router.push("/");
+    } catch {
+      setError("Impossible de créer un compte invité.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -93,6 +111,22 @@ export default function LoginPage() {
 
             <Button type="submit" variant="primary" disabled={loading} className="w-full">
               {loading ? "Connexion…" : "Se connecter"}
+            </Button>
+
+            <div className="relative my-4 flex items-center">
+              <div className="flex-1 border-t border-[var(--color-border)]" />
+              <span className="px-2 text-xs text-[var(--color-muted)]">ou</span>
+              <div className="flex-1 border-t border-[var(--color-border)]" />
+            </div>
+
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={loading}
+              className="w-full"
+              onClick={handleGuestLogin}
+            >
+              Continuer en invité
             </Button>
           </form>
 

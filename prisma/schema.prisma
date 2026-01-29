@@ -18,12 +18,14 @@ model Task {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String    @id @default(uuid())
   fullname String?
-  email    String  @unique
+  email    String    @unique
   password String?
   image    String?
   votes    Vote[]
+  comments Comment[]
+  posts    Post[]
 }
 
 model Question {
@@ -64,4 +66,52 @@ model News {
   description String
   imageUrl    String
   createdAt   DateTime @default(now())
+}
+
+model ForumCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  color     String
+  bgColor   String
+  iconPath  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+}
+
+model Post {
+  id              String        @id @default(cuid())
+  title           String
+  content         String
+  forumCategoryId String
+  authorId        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  comments        Comment[]
+  author          User          @relation(fields: [authorId], references: [id])
+  category        ForumCategory @relation(fields: [forumCategoryId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  postId    String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+model EuropeanLaw {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  fullText    String
+  imageUrl    String?
+  category    String
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
