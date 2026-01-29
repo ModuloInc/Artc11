@@ -10,7 +10,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --ignore-scripts
+# Inclure les devDependencies (Tailwind, PostCSS, etc.) pour le build
+RUN npm ci --ignore-scripts --include=dev
 
 # ─── builder ──────────────────────────────────────────────────────────────
 FROM base AS builder
