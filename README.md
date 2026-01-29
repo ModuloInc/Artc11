@@ -1,43 +1,98 @@
 # Article11
 
-### Run project with the following commands :
+Application de **vote citoyen** : actualités, topics par catégorie, questions avec votes (Oui / Neutre / Non) et statistiques.
 
-Deploy the container :
+## Stack
 
+- **Next.js 15** (App Router), **React 19**, **Tailwind CSS 4**
+- **Prisma** + **PostgreSQL**
+- **NextAuth** (optionnel), auth custom (login / register)
+
+## Démarrage rapide
+
+### 1. Prérequis
+
+- Node.js 20+
+- Docker et Docker Compose (pour la base)
+
+### 2. Base de données
+
+```bash
+docker compose up -d
 ```
-docker compose up --watch
-```
 
-For first usage only :
+Puis appliquer le schéma :
 
-```
+```bash
 npx prisma db push
 ```
 
-```
-prisma generate
+Optionnel : remplir la base avec des données fictives (news, catégories, questions, utilisateurs, votes) :
+
+```bash
+npx prisma db seed
 ```
 
-In a second terminal :
+Comptes de test : `*@example.com` (ex. `lea.martin@example.com`) / `password123`
 
+### 3. Variables d’environnement
+
+Créer un fichier `.env` à la racine :
+
+```env
+DATABASE_URL="postgresql://postgres:example@localhost:5432/postgres"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="dev-secret-change-in-production"
 ```
+
+### 4. Lancer l’app
+
+```bash
+npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
-### Database guide
+Si `npm run dev` échoue avec `EPERM` sur le port 3000 :
 
-Open prisma studio to inspect database :
-
-```
-npx prisma studio
-```
-Push models in the database :
-
-```
-npx prisma db push
+```bash
+npx next dev --turbopack --hostname 127.0.0.1
 ```
 
-> [!IMPORTANT]  
-> The Docker image must be running in order to use the database.
+## Scripts
+
+| Commande       | Description                |
+|----------------|----------------------------|
+| `npm run dev`  | Dev avec Turbopack         |
+| `npm run build`| Build production           |
+| `npm run start`| Démarrer en production     |
+| `npm run lint` | Linter                     |
+| `npm run typecheck` | Vérification TypeScript |
+| `npx prisma studio` | Interface BDD          |
+
+## Docker (production)
+
+Build de l’image :
+
+```bash
+docker build -t article11 .
+```
+
+Lancer **DB + app** via Compose :
+
+```bash
+docker compose --profile app up -d
+```
+
+> Appliquer le schéma (`prisma db push`) avant le premier run (ex. via job init ou manuellement).
+
+## Health check
+
+- `GET /api/health` → 200 si l’app répond.
+- `GET /api/health?db=1` → 200 si app + DB OK, 503 si DB injoignable.
+
+## Voir aussi
+
+- [TOPOS.md](./TOPOS.md) – topo détaillé du projet.
+- [README.Docker.md](./README.Docker.md) – build et déploiement Docker.

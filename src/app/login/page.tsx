@@ -1,124 +1,112 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "@/components/Button";
 
 export default function LoginPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-        try {
-            const res = await fetch("/api/auth/login", {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-                headers: { "Content-Type": "application/json" },
-            });
+      if (!res.ok) {
+        setError(data.error || "Connexion impossible");
+        return;
+      }
 
-            const data = await res.json();
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userFullname", data.user?.fullname ?? "");
+      localStorage.setItem("userId", data.user?.id ?? "");
+      router.push("/");
+    } catch {
+      setError("Une erreur s’est produite");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            if (!res.ok) {
-                alert(data.error || "Login failed");
-                return;
-            }
-
-            // Stocker les informations de l'utilisateur dans localStorage
-            localStorage.setItem("userEmail", email);
-            localStorage.setItem("userFullname", data.user?.fullname || "");
-            localStorage.setItem("userId", data.user?.id || "");
-
-            // Redirection vers la page de profil après connexion
-            router.push("/");
-        } catch (error) {
-            console.error("Login error:", error);
-            alert("An error occurred during login");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="flex justify-center items-center">
-            <div className="bg-[#FFFAFA] p-6 flex flex-col items-center justify-center">
-                <br/>
-                <br/>
-                {/* LOGO */}
-                <div className=" flex justify-center mb-6">
-                    <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
-                </div>
-                <br/>
-                <br/>
-
-                {/* FORMULAIRE */}
-                <div className="flex flex-col">
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6 mt-2">
-                        <div className="relative w-[296px]">
-                            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">📧</span>
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
-                                disabled={loading}
-
-                            />
-                        </div>
-
-                        <div>
-                            <div className="relative w-[296px] mb-4">
-                                <span
-                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">🔒</span>
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
-                                    disabled={loading}
-
-                                />
-                            </div>
-
-                            {/* Mot de passe oublié */}
-                            <div className="w-[296px] text-right mt-[-6px]">
-                                <button
-                                    className="text-blue-600 underline text-sm"
-                                    onClick={() => router.push("/forgot-password")}
-                                    type="button"
-                                    disabled={loading}
-                                >
-                                    Forgot password?
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Bouton Connexion */}
-                        <div className="flex justify-center mt-2">
-                            <button
-                                type="submit"
-                                className="w-[157px] h-[48px] bg-[#2A51A0] text-white font-semibold rounded-full shadow-md hover:bg-blue-700"
-                                disabled={loading}
-                            >
-                                Sign in
-                            </button>
-                        </div>
-                    </form>
-
-                    <button
-                        onClick={() => router.push("/register")}
-                        className="mt-4 text-[#2A51A0] font-bold text-sm"
-                        disabled={loading}
-                    >
-                        Register
-                    </button>
-                </div>
-            </div>
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 flex justify-center">
+          <Image src="/logo.svg" alt="Article11" width={140} height={72} priority />
         </div>
-    );
+
+        <div className="rounded-[var(--radius-xl)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-md)]">
+          <h1 className="font-heading mb-6 text-xl font-semibold text-[var(--color-foreground)]">
+            Connexion
+          </h1>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-foreground)] placeholder-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Mot de passe
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-foreground)] placeholder-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-[var(--color-error)]" role="alert">
+                {error}
+              </p>
+            )}
+
+            <Button type="submit" variant="primary" disabled={loading} className="w-full">
+              {loading ? "Connexion…" : "Se connecter"}
+            </Button>
+          </form>
+
+          <p className="mt-4 text-center text-sm text-[var(--color-muted)]">
+            Pas de compte ?{" "}
+            <Link
+              href="/register"
+              className="font-medium text-[var(--color-primary)] hover:underline"
+            >
+              S’inscrire
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(req: Request) {
+export async function GET() {
     try {
         // Récupérer toutes les questions avec leurs catégories
         const questions = await prisma.question.findMany({

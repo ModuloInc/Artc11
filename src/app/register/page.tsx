@@ -2,95 +2,123 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "@/components/Button";
 
 export default function RegisterPage() {
-    const router = useRouter();
-    const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const router = useRouter();
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullname, email, password }),
+      });
+      const data = await res.json();
 
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            body: JSON.stringify({ fullname, email, password }),
-            headers: { "Content-Type": "application/json" },
-        });
+      if (!res.ok) {
+        setError(data.error || "Inscription impossible");
+        return;
+      }
+      router.push("/login");
+    } catch {
+      setError("Une erreur s’est produite");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const data = await res.json();
-
-        if (!res.ok) {
-            alert(data.error || "Registration failed");
-            return;
-        }
-
-        router.push("/login"); // Redirection après inscription
-    };
-
-    return (
-        <div className="h-screen flex justify-center items-center">
-            {/* Carte centrée verticalement */}
-            <div className="w-[402px] h-full max-h-[750px] bg-[#FFFAFA] p-6 flex flex-col items-center justify-center">
-
-                {/* LOGO */}
-                <div className="w-[226px] h-[117px] flex justify-center mb-6">
-                    <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain"/>
-                </div>
-
-                {/* FORMULAIRE */}
-                <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-6 mt-2">
-                    <div className="relative w-[296px]">
-                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">👤</span>
-                        <input
-                            type="text"
-                            placeholder="Full Name"
-                            value={fullname}
-                            onChange={(e) => setFullname(e.target.value)}
-                            className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
-                        />
-                    </div>
-
-                    <div className="relative w-[296px]">
-                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">📧</span>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
-                        />
-                    </div>
-
-                    <div className="relative w-[296px] mb-4">
-                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">🔒</span>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full h-[42px] p-3 pl-12 rounded-full border border-gray-300 bg-[#F2F0F0] text-gray-900 focus:outline-none"
-                        />
-                    </div>
-
-                    {/* Boutons Register et Sign in rapprochés */}
-                    <div className="flex flex-col items-center gap-2 mt-2">
-                        <button
-                            type="submit"
-                            className="w-[157px] h-[48px] bg-[#2A51A0] text-white font-semibold rounded-full shadow-md hover:bg-blue-700"
-                        >
-                            Register
-                        </button>
-
-                        <button
-                            onClick={() => router.push("/login")}
-                            className="text-[#2A51A0] font-bold text-sm mt-5"
-                        >
-                            Sign in
-                        </button>
-                    </div>
-                </form>
-            </div>
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 flex justify-center">
+          <Image src="/logo.svg" alt="Article11" width={140} height={72} priority />
         </div>
-    );
+
+        <div className="rounded-[var(--radius-xl)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-md)]">
+          <h1 className="font-heading mb-6 text-xl font-semibold text-[var(--color-foreground)]">
+            Inscription
+          </h1>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="fullname" className="sr-only">
+                Nom complet
+              </label>
+              <input
+                id="fullname"
+                type="text"
+                placeholder="Nom complet"
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-foreground)] placeholder-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-foreground)] placeholder-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Mot de passe
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-foreground)] placeholder-[var(--color-muted)] transition-colors focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-[var(--color-error)]" role="alert">
+                {error}
+              </p>
+            )}
+
+            <Button type="submit" variant="primary" disabled={loading} className="w-full">
+              {loading ? "Inscription…" : "S’inscrire"}
+            </Button>
+          </form>
+
+          <p className="mt-4 text-center text-sm text-[var(--color-muted)]">
+            Déjà un compte ?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-[var(--color-primary)] hover:underline"
+            >
+              Se connecter
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

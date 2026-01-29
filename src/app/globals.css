@@ -1,26 +1,103 @@
-  @import "tailwindcss";
+@import "tailwindcss";
 
+/* Design system – Article11 */
 :root {
-  --background: #FFFAFA;
-  --foreground: #171717;
+  /* Palette */
+  --color-primary: #0d3b3b;
+  --color-primary-hover: #0f4a4a;
+  --color-primary-muted: #e8f0ef;
+  --color-accent: #e07c4a;
+  --color-accent-hover: #c96a3d;
+  --color-accent-muted: #fef3ed;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #faf8f5;
+  --color-background: #faf8f5;
+  --color-foreground: #1a1a1a;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-success: #0d9488;
+  --color-error: #dc2626;
+  --color-vote-positive: #0d9488;
+  --color-vote-neutral: #6b7280;
+  --color-vote-negative: #dc2626;
+  /* Typography (system stack – build works offline) */
+  --font-heading: "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Spacing / radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px rgba(13, 59, 59, 0.06);
+  --shadow-md: 0 4px 12px rgba(13, 59, 59, 0.08);
+  --shadow-lg: 0 12px 32px rgba(13, 59, 59, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-geist-sans: var(--font-geist-sans);
-  --font-geist-mono: var(--font-geist-mono);
+  --color-background: #faf8f5;
+  --color-foreground: #1a1a1a;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #FFFAFA;
-    --foreground: #171717;
+    --color-surface: #1a1a1a;
+    --color-surface-elevated: #242424;
+    --color-background: #111111;
+    --color-foreground: #fafafa;
+    --color-muted: #9ca3af;
+    --color-border: #374151;
+    --color-primary-muted: #0d3b3b40;
+    --color-accent-muted: #e07c4a20;
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01" 1, "ss02" 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+/* Focus visible for a11y */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar subtle */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
 }

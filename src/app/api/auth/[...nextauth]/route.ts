@@ -1,17 +1,8 @@
 import NextAuth from "next-auth";
 import { PrismaClient } from "@prisma/client";
-import { AuthOptions } from "next-auth";
+import type { AuthOptions } from "next-auth";
 
 const prisma = new PrismaClient();
-
-interface Session {
-    user: {
-        id: string
-        name?: string | null
-        email?: string | null
-        image?: string | null
-    }
-}
 
 const authOptions: AuthOptions = {
     providers: [],
@@ -45,8 +36,8 @@ const authOptions: AuthOptions = {
             return true;
         },
         async session({ session, token }) {
-            if (session.user && token.sub) {
-                (session.user as any).id = token.sub;
+            if (session?.user && token.sub) {
+                (session.user as { id?: string }).id = token.sub;
             }
             return session;
         },

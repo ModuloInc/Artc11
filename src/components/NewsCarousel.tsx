@@ -3,64 +3,98 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/pagination";
 
 interface NewsItem {
-    id: string;
-    title: string;
-    description: string;
-    imageUrl: string;
+  id: string;
+  title?: string;
+  description: string;
+  imageUrl: string;
 }
 
 export default function NewsCarousel() {
-    const [news, setNews] = useState<NewsItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchNews = async () => {
-            try {
-                const response = await fetch("/api/news");
+  useEffect(() => {
+    async function fetchNews() {
+      try {
+        const res = await fetch("/api/news");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        setNews(Array.isArray(data) ? data : []);
+      } catch (e) {
+        setError("Impossible de charger les actualités");
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchNews();
+  }, []);
 
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                }
-                const data = await response.json();
-                setNews(data);
-            } catch (err) {
-                setError("Erreur lors de la récupération des news");
-                console.error("❌ Erreur:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchNews();
-    }, []);
+  if (loading) {
     return (
-        <div className="w-full px-4">
-            {loading && <p>Chargement des news...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && (
-                <Swiper modules={[Autoplay]} spaceBetween={20} slidesPerView={1} autoplay={{ delay: 3000 }} className="w-full mb-8">
-                    {news.length > 0 ? (
-                        news.map((newsItem) => (
-                            <SwiperSlide key={newsItem.id}>
-                                <div className="relative w-full rounded-lg">
-                                    <div className="relative w-full h-48 sm:h-56 md:h-64">
-                                        <Image src={newsItem.imageUrl} alt={newsItem.description} fill className="object-cover opacity-75" />
-                                    </div>
-                                    <div className="p-2">
-                                        <p className="text-[#002266] text-[20px] font-medium mt-2">{newsItem.description}</p>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        ))
-                    ) : (
-                        <p>Aucune news disponible</p>
-                    )}
-                </Swiper>
-            )}
-        </div>
+      <div className="flex h-56 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-surface-elevated)]">
+        <span className="text-[var(--color-muted)]">Chargement…</span>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-[var(--radius-lg)] bg-[var(--color-accent-muted)] px-4 py-6 text-center text-[var(--color-error)]">
+        {error}
+      </div>
+    );
+  }
+
+  if (!news.length) {
+    return (
+      <div className="flex h-56 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-surface-elevated)]">
+        <span className="text-[var(--color-muted)]">Aucune actualité</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full">
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        spaceBetween={16}
+        slidesPerView={1}
+        autoplay={{ delay: 4500, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        className="!pb-10 [&_.swiper-pagination-bullet]:!bg-[var(--color-primary)] [&_.swiper-pagination-bullet-active]:!scale-125"
+      >
+        {news.map((item) => (
+          <SwiperSlide key={item.id}>
+            <article className="group relative overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-primary)] shadow-[var(--shadow-md)]">
+              <div className="relative aspect-[16/9] w-full min-h-[180px] sm:min-h-[220px]">
+                <Image
+                  src={item.imageUrl}
+                  alt=""
+                  fill
+                  className="object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-90"
+                  sizes="(max-width: 640px) 100vw, 720px"
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
+                  aria-hidden
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5">
+                  <p className="font-heading text-lg font-semibold text-white drop-shadow md:text-xl">
+                    {item.title ?? item.description}
+                  </p>
+                </div>
+              </div>
+            </article>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
 }
