@@ -44,6 +44,25 @@ services:
       - "traefik.http.routers.article11-frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.article11-frontend.loadbalancer.server.port=3000"
 
+  # Shell avec Node + projet monté : npm install, prisma db push, prisma db seed
+  cli:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: postgresql://postgres:example@db:5432/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - app
+    networks:
+      - default
+    command: sh
+    stdin_open: true
+    tty: true
+
 networks:
   web:
     external: true
